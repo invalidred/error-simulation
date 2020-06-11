@@ -31,9 +31,11 @@ function start4xx5xxServer(port) {
                 details: 'This is just some details and its fake, so please ignore'
             }]
         }
-        console.log('isLegacy', isLegacy, req.params)
+        const payload = isLegacy === 'true' ? legacyPayload : jsonApiError
+        console.log('isLegacy', isLegacy, req.query)
+        console.log('payload', payload)
         return res.status(Number(statusCode))
-            .json(isLegacy ? legacyPayload : jsonApiError)
+            .json(payload)
     })
 
     app.listen(port, logMsg(`/error/:statusCode`, port))
