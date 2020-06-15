@@ -82,39 +82,40 @@ function server500LegacyError() {
 }
 
 // Software Timeout API Call
-// function softwareTimeoutError() {
-//     // ECONNABORTED - Software caused connection abort
-//     const axiosECONNABORTEDTimeoutError = () => axios.create({
-//         timeout: 10,
-//     }).get(`http://localhost:3000/delay/100`)
+function softwareTimeoutError() {
+    // ECONNABORTED - Software caused connection abort
+    const axiosECONNABORTEDTimeoutError = () => axios.create({
+        timeout: 10,
+    }).get(`http://localhost:3000/delay/100`)
 
-//     axiosECONNABORTEDTimeoutError().catch((error) => {
-//         // console.log(JSON.stringify(error))
-//         // console.log(error.toJSON())
-//         console.log('error keys', Object.keys(error)) // [config, code, request, response, isAxiosError, toJSON]
-//         console.log('isAxiosError', error.isAxiosError) // true
-//         console.log('message', error.message) // timeout of 10ms exceeded
-//         console.log('errno', error.errno) // undefined
-//         console.log('response', error.response) // undefined
-//         console.log('request', Object.keys(error.request)) // {} // big nested object
-//         console.log('code', error.code) // ECONNABORTEDT
-//         console.log('config', prop('config')(error)) // {} // url, verb
-//     })
-// }
+    axiosECONNABORTEDTimeoutError().catch((error) => {
+        // console.log(JSON.stringify(error))
+        // console.log(error.toJSON())
+        console.log('error keys', Object.keys(error)) // [config, code, request, response, isAxiosError, toJSON]
+        console.log('isAxiosError', error.isAxiosError) // true
+        console.log('message', error.message) // timeout of 10ms exceeded
+        console.log('errno', error.errno) // undefined
+        console.log('response', error.response) // undefined
+        console.log('request', Object.keys(error.request)) // {} // big nested object
+        console.log('code', error.code) // ECONNABORTEDT
+        console.log('config', prop('config')(error)) // {} // url, verb
+    })
+}
 
 // Server Error
 function serverConnectionResetError() {
     // ECONNRESET - Connection reset by peer
-    const axiosECONNRESETError = () => axios.get(`http://localhost:3002/`)
+    const axiosECONNRESETError = () => axios.get(`http://localhost:3002/`, { timeout: 1000 })
 
     axiosECONNRESETError()
         .then(console.log)
         .catch((error) => {
+            console.log(error.toJSON())
             console.log('error keys', Object.keys(error)) // [errno, code, syscall, config, request, response, isAxiosError, toJSON]
             console.log('isAxiosError', error.isAxiosError) // true
             console.log('message', error.message) // message connect ECONNREFUSED 127.0.0.1:3001
             console.log('errno', error.errno) // undefined
-            console.log('response', Object.keys(error.response)) // undefined
+            // console.log('response', Object.keys(error.response)) // undefined
             console.log('address', error.address) // 127.0.0.1
             console.log('port', error.port) // 3001
             console.log('config', Object.keys(error.config)) // {} // url, method, headers, timeout, adapters
@@ -177,7 +178,7 @@ function socketTimeoutError() {
 // server500Error()
 // server500LegacyError()
 // softwareTimeoutError()
-// serverConnectionResetError()
+serverConnectionResetError()
 // socketTimeoutError()
 
 
